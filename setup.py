@@ -18,7 +18,7 @@ except FileNotFoundError:
 # Configuration setup
 setup(
     name="movatalk",
-    version="0.1.38",
+    version="0.1.39",
     description="libs for cameramonit, ocr, fin-officer, cfo, and other projects",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
