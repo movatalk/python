@@ -1,1 +1,178 @@
-# Pipeline quizu edukacyjnego
+# examples/pipelines/educational_quiz.yaml
+name: "movatalk - Quiz edukacyjny"
+description: "Pipeline implementujący interaktywny quiz edukacyjny z różnymi kategoriami pytań"
+version: "1.0.0"
+
+variables:
+  categoria: "matematyka"
+  questions:
+    matematyka:
+      - pytanie: "Ile to jest 5 plus 3?"
+        odpowiedź: "8"
+      - pytanie: "Ile boków ma trójkąt?"
+        odpowiedź: "3"
+      - pytanie: "Co jest większe: 15 czy 51?"
+        odpowiedź: "51"
+      - pytanie: "Ile to jest 4 razy 2?"
+        odpowiedź: "8"
+      - pytanie: "Ile to jest 10 minus 4?"
+        odpowiedź: "6"
+    przyroda:
+      - pytanie: "Jakiego koloru jest trawa?"
+        odpowiedź: "zielona"
+      - pytanie: "Jaki owoc jest czerwony i rośnie na drzewie?"
+        odpowiedź: "jabłko"
+      - pytanie: "Ile nóg ma pająk?"
+        odpowiedź: "8"
+      - pytanie: "Jak nazywa się miejsce, gdzie mieszkają zwierzęta w zoo?"
+        odpowiedź: "wybieg"
+      - pytanie: "Jaki ptak nie lata, ale świetnie pływa?"
+        odpowiedź: "pingwin"
+  welcome_message: "Witaj w quizie z kategorii ${variables.categoria}! Zadam Ci 5 pytań. Gotowy?"
+  end_message: "Koniec quizu! Zdobyłeś ${state.score} punktów na ${variables.max_questions} możliwych. Dobra robota!"
+  max_questions: 5
+
+steps:
+  - name: "initialize_quiz"
+    type: "component"
+    component: "logger"
+    params:
+      level: "info"
+      message: "Inicjalizacja quizu edukacyjnego - kategoria: ${variables.categoria}"
+
+  - name: "welcome"
+    type: "component"
+    component: "text_to_speech"
+    params:
+      text: "${variables.welcome_message}"
+
+  - name: "init_state"
+    type: "component"
+    component: "variable_set"
+    params:
+      name: "score"
+      value: 0
+      scope: "state"
+
+  - name: "get_questions"
+    type: "component"
+    component: "variable_set"
+    params:
+      name: "current_questions"
+      value: "${variables.questions[variables.categoria]}"
+      scope: "state"
+
+  - name: "shuffle_questions"
+    type: "python"
+    code: |
+      import random
+      questions = context['state']['current_questions']
+      random.shuffle(questions)
+      context['state']['current_questions'] = questions[:context['variables']['max_questions']]
+      result = len(context['state']['current_questions'])
+
+  - name: "quiz_loop"
+    type: "component"
+    component: "loop"
+    params:
+      type: "count"
+      iterations: "${variables.max_questions}"
+      steps:
+        - name: "get_current_question"
+          type: "component"
+          component: "variable_set"
+          params:
+            name: "current_question"
+            value: "${state.current_questions[variables.loop_index]}"
+            scope: "state"
+
+        - name: "log_question"
+          type: "component"
+          component: "logger"
+          params:
+            level: "info"
+            message: "Pytanie ${variables.loop_index + 1}: ${state.current_question.pytanie}"
+
+        - name: "ask_question"
+          type: "component"
+          component: "text_to_speech"
+          params:
+            text: "Pytanie numer ${variables.loop_index + 1}. ${state.current_question.pytanie}"
+
+        - name: "listen_for_answer"
+          type: "component"
+          component: "audio_record"
+          params:
+            duration: 5
+            output_var: "answer_audio"
+
+        - name: "transcribe_answer"
+          type: "component"
+          component: "speech_to_text"
+          params:
+            audio_path: "${results.answer_audio}"
+            output_var: "answer_text"
+
+        - name: "log_answer"
+          type: "component"
+          component: "logger"
+          params:
+            level: "info"
+            message: "Odpowiedź użytkownika: '${results.answer_text}'"
+
+        - name: "filter_answer"
+          type: "component"
+          component: "parental_control"
+          params:
+            action: "filter_input"
+            input_text: "${results.answer_text}"
+            output_var: "filtered_answer"
+
+        - name: "check_answer"
+          type: "python"
+          code: |
+            import re
+            user_answer = context['results']['filtered_answer'].lower()
+            correct_answer = context['state']['current_question']['odpowiedź'].lower()
+            
+            # Proste sprawdzenie
+            is_correct = (user_answer == correct_answer or 
+                         correct_answer in user_answer or
+                         re.search(r'\b' + re.escape(correct_answer) + r'\b', user_answer))
+            
+            if is_correct:
+                context['state']['score'] += 1
+                
+            result = is_correct
+
+        - name: "give_feedback"
+          type: "component"
+          component: "condition"
+          params:
+            condition: "context['results']['check_answer']"
+            true_pipeline:
+              - name: "positive_feedback"
+                type: "component"
+                component: "text_to_speech"
+                params:
+                  text: "Brawo! Twoja odpowiedź jest poprawna. Masz już ${state.score} punktów."
+            false_pipeline:
+              - name: "negative_feedback"
+                type: "component"
+                component: "text_to_speech"
+                params:
+                  text: "Niestety, to nie jest poprawna odpowiedź. Prawidłowa odpowiedź to: ${state.current_question.odpowiedź}."
+
+        - name: "pause_between_questions"
+          type: "component"
+          component: "timer"
+          params:
+            action: "sleep"
+            duration: 2
+
+  - name: "summary"
+    type: "component"
+    component: "text_to_speech"
+    params:
+      text: "${variables.end_message}"
+

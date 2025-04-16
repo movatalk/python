@@ -1,4 +1,4 @@
-movatalk/
+kidsvoiceai/
 ├── LICENSE                           # Licencja MIT
 ├── README.md                         # Główny plik README z opisem projektu
 ├── MANIFEST.in                       # Pliki statyczne do uwzględnienia w pakiecie
@@ -42,7 +42,7 @@ movatalk/
 ├── deployment/                       # Narzędzia wdrożeniowe
 │   └── ansible/                      # Pliki Ansible
 │       ├── inventory.ini             # Konfiguracja hostów
-│       └── movatalk-deploy.yml    # Playbook Ansible
+│       └── kidsvoiceai-deploy.yml    # Playbook Ansible
 │
 ├── tests/                            # Testy jednostkowe
 │   ├── __init__.py
@@ -52,7 +52,7 @@ movatalk/
 │   ├── test_hardware.py              # Testy modułu sprzętowego
 │   └── test_pipeline.py              # Testy systemu pipelinów
 │
-└── movatalk/                      # Główny pakiet
+└── kidsvoiceai/                      # Główny pakiet
     ├── __init__.py                   # Inicjalizacja pakietu
     ├── __main__.py                   # Punkt wejścia dla modułu
     │

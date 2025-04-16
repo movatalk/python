@@ -1,1 +1,23 @@
-# Główna konfiguracja systemu
+{
+  "audio": {
+    "sample_rate": 16000,
+    "channels": 1,
+    "record_seconds": 5
+  },
+  "stt": {
+    "model_path": "~/.movatalk/models/stt/models/ggml-tiny.bin",
+    "language": "pl"
+  },
+  "tts": {
+    "voice_path": "~/.local/share/piper/voices/pl/krzysztof/low/pl_krzysztof_low.onnx"
+  },
+  "hardware": {
+    "led_power_pin": 22,
+    "led_recording_pin": 23,
+    "led_thinking_pin": 24,
+    "button_record_pin": 17,
+    "button_power_pin": 27
+  },
+  "use_hardware_interface": true,
+  "use_power_manager": true
+}

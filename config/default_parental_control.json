@@ -1,1 +1,9 @@
-# Ustawienia kontroli rodzicielskiej
+{
+  "max_daily_usage_mins": 60,
+  "allowed_hours_start": 8,
+  "allowed_hours_end": 20,
+  "blocked_topics": ["przemoc", "strach", "polityka", "seks", "narkotyki", "alkohol"],
+  "educational_focus": true,
+  "educational_topics": ["nauka", "historia", "matematyka", "przyroda", "języki", "sztuka", "muzyka"],
+  "profanity_filter": true
+}

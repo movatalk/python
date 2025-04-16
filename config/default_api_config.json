@@ -1,1 +1,8 @@
-# Konfiguracja API
+{
+  "api_key": "",
+  "endpoint": "https://api.openai.com/v1/chat/completions",
+  "model": "gpt-3.5-turbo",
+  "max_tokens": 150,
+  "temperature": 0.7,
+  "child_safe_filter": true
+}

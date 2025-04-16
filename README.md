@@ -1,6 +1,201 @@
 # [movatalk](http://lib.movatalk.com)
 
-# movatalk
+# KidsVoiceAI
+
+![KidsVoiceAI Logo](docs/images/logo.png)
+
+Biblioteka Python do tworzenia bezpiecznych interfejsów głosowych AI dla dzieci, z przetwarzaniem na urządzeniu i kontrolą rodzicielską.
+
+[![PyPI version](https://badge.fury.io/py/kidsvoiceai.svg)](https://badge.fury.io/py/kidsvoiceai)
+[![GitLab Pipeline Status](https://gitlab.com/yourusername/kidsvoiceai/badges/main/pipeline.svg)](https://gitlab.com/yourusername/kidsvoiceai/-/commits/main)
+
+## O projekcie
+
+KidsVoiceAI to biblioteka open source zaprojektowana do tworzenia bezpiecznych urządzeń głosowych dla dzieci, które wykorzystują technologie sztucznej inteligencji przy zachowaniu prywatności i kontroli rodzicielskiej. Inspirowana koncepcją urządzenia MovaPad, biblioteka umożliwia przetwarzanie mowy na tekst (STT) i tekstu na mowę (TTS) bezpośrednio na urządzeniu, zapewniając ochronę wrażliwych danych.
+
+### Kluczowe funkcje
+
+- 🎤 **Przetwarzanie audio** - Nagrywanie, filtrowanie i przetwarzanie dźwięku
+- 🗣️ **Lokalne STT i TTS** - Konwersja mowy na tekst i tekstu na mowę na urządzeniu
+- 🔒 **Kontrola rodzicielska** - Filtrowanie treści, limity czasowe, bezpieczne połączenia
+- 🔋 **Zarządzanie energią** - Optymalizacja zużycia baterii
+- 🌐 **Opcjonalne integracje z AI** - Bezpieczne połączenia z API AI
+- 📱 **Interfejs sprzętowy** - Wsparcie dla przycisków, diod LED i innych komponentów
+- 🔄 **System pipelinów** - Wizualne tworzenie aplikacji za pomocą YAML
+
+## Instalacja
+
+### Z PyPI
+
+```bash
+pip install kidsvoiceai
+```
+
+### Z GitLab
+
+```bash
+pip install git+https://gitlab.com/yourusername/kidsvoiceai.git
+```
+
+### Klonowanie repozytorium
+
+```bash
+git clone https://gitlab.com/yourusername/kidsvoiceai.git
+cd kidsvoiceai
+pip install -e .
+```
+
+### Instalacja na Raspberry Pi Zero 2 W
+
+Dla pełnej instalacji na Raspberry Pi Zero 2 W, zalecamy użycie naszych skryptów instalacyjnych:
+
+```bash
+git clone https://gitlab.com/yourusername/kidsvoiceai.git
+cd kidsvoiceai
+sudo bash scripts/install_dependencies.sh
+bash scripts/install_models.sh
+pip install -e .
+sudo bash scripts/setup_service.sh
+```
+
+## Szybki start
+
+### Programistyczne użycie biblioteki
+
+```python
+from kidsvoiceai.audio import AudioProcessor, WhisperSTT, PiperTTS
+from kidsvoiceai.api import SafeAPIConnector
+from kidsvoiceai.safety import ParentalControl
+
+# Inicjalizacja komponentów
+audio = AudioProcessor()
+stt = WhisperSTT()
+tts = PiperTTS()
+api = SafeAPIConnector()
+parental = ParentalControl()
+
+# Nagrywanie i przetwarzanie
+audio_file = audio.start_recording(duration=5)
+transcript = stt.transcribe(audio_file)
+print(f"Rozpoznany tekst: {transcript}")
+
+# Filtrowanie i API
+filtered_input, filter_message = parental.filter_input(transcript)
+if filtered_input:
+    response = api.query_llm(filtered_input)
+    filtered_response = parental.filter_output(response)
+    tts.speak(filtered_response)
+else:
+    tts.speak(filter_message)
+```
+
+### Użycie lokalnego LLM (Ollama)
+
+```python
+from kidsvoiceai.api import LocalLLMConnector
+
+# Inicjalizacja lokalnego LLM
+local_llm = LocalLLMConnector()
+
+# Uruchomienie serwera Ollama (jeśli nie jest uruchomiony)
+local_llm.start_ollama_server()
+
+# Zapytanie do lokalnego modelu
+response = local_llm.query_llm("Opowiedz krótką historię o przyjaźni")
+print(response)
+```
+
+### Konfigurowanie i uruchamianie pipelinów
+
+Tworzenie pliku YAML:
+
+```yaml
+name: "Prosty asystent"
+description: "Przykładowy asystent głosowy"
+version: "1.0.0"
+variables:
+  greeting: "Witaj! Jak mogę Ci pomóc?"
+steps:
+  - name: "start"
+    type: "component"
+    component: "text_to_speech"
+    params:
+      text: "${variables.greeting}"
+  - name: "listen"
+    type: "component"
+    component: "audio_record"
+    params:
+      duration: 5
+      output_var: "audio_file"
+  - name: "transcribe"
+    type: "component"
+    component: "speech_to_text"
+    params:
+      audio_path: "${results.audio_file}"
+      output_var: "transcript"
+  - name: "respond"
+    type: "component"
+    component: "local_llm"
+    params:
+      text: "${results.transcript}"
+      output_var: "response"
+  - name: "speak_response"
+    type: "component"
+    component: "text_to_speech"
+    params:
+      text: "${results.response}"
+```
+
+Uruchamianie pipeline'u:
+
+```bash
+python -m kidsvoiceai.pipeline.designer run my_pipeline.yaml
+```
+
+### Wizualny kreator pipelinów
+
+```bash
+python -m kidsvoiceai.pipeline.designer wizard my_pipeline.yaml
+```
+
+### Wizualizacja pipeline'u
+
+```bash
+python -m kidsvoiceai.pipeline.designer visualize my_pipeline.yaml --format svg
+```
+
+## Rozwiązania sprzętowe
+
+KidsVoiceAI został zaprojektowany do uruchamiania na różnych platformach sprzętowych:
+
+- **Raspberry Pi Zero 2 W** (zalecane) - Pełna funkcjonalność przy niewielkim zużyciu energii
+- **M5Stack** - Kompaktowe rozwiązanie z wbudowanym ekranem i baterią
+- **Orange Pi Zero 2** - Alternatywa dla Raspberry Pi
+- **NVIDIA Jetson Nano** - Dla bardziej zaawansowanych zastosowań lokalnych modeli AI
+
+Szczegółowe informacje o wspieranych platformach znajdują się w dokumentacji.
+
+## Wymagania sprzętowe
+
+Minimalne wymagania:
+- Raspberry Pi Zero 2 W lub podobne urządzenie
+- Mikrofon (np. ReSpeaker 2-Mic Pi HAT)
+- Głośnik/wzmacniacz
+- Przyciski i diody LED (opcjonalnie)
+- Bateria (opcjonalnie)
+
+Pełną listę wspieranych platform znajdziesz w [docs/hardware_setup.md](docs/hardware_setup.md).
+
+## Dokumentacja
+
+Pełna dokumentacja dostępna jest w katalogu [docs/](docs/):
+
+- [Instalacja](docs/installation.md)
+- [Konfiguracja sprzętowa](docs/hardware_setup.md)
+- [Referencja API](docs/api_reference.md)
+- [Przykłady użycia](docs/examples.md)
+- [System pipelinów](docs/pipelines.md)
+
 
 ![movatalk Logo](docs/images/logo.png)
 
@@ -380,3 +575,30 @@ python -m pip install --upgrade build twine
 python -m build
 python -m twine upload dist/*
 ```
+
+
+<function_results>OK</function_results>
+
+Przygotowałem kompletny projekt movatalk, który jest w pełni funkcjonalną biblioteką Python implementującą bezpieczne urządzenie audio AI dla dzieci, inspirowane koncepcją MovaPad. Projekt jest gotowy do wdrożenia na urządzeniach takich jak Raspberry Pi Zero 2 W, a także do instalacji przez GitLab CI/CD.
+
+## Podsumowanie projektu
+
+### Główne komponenty biblioteki
+1. **System audio** (nagrywanie, STT, TTS) z lokalnym przetwarzaniem
+2. **Bezpieczne połączenie z API** (tylko tekst, bez przesyłania danych głosowych)
+3. **Kontrola rodzicielska i filtrowanie treści**
+4. **Zarządzanie energią** dla dłuższego czasu pracy
+5. **Integracja sprzętowa** (przyciski, LED, opcjonalne LoRaWAN)
+
+### Pliki i struktura
+Stworzyłem pełną strukturę projektu zawierającą:
+- Moduły biblioteki z kompletną implementacją funkcji
+- Skrypty instalacyjne i konfiguracyjne
+- Przykłady użycia (prosty asystent, quiz edukacyjny, opowiadacz historii)
+- Pliki konfiguracyjne GitLab CI/CD do automatycznego wdrażania
+- Dokumentację instalacji i użytkowania
+
+### Kluczowe cechy implementacji
+- **Bezpieczeństwo dzieci**: Lokalne STT/TTS chroni prywatność
+- **Modułowość**: Każdy komponent może być używany niezależnie
+- **Rozszerzalność**: Łatwe dodawanie nowych

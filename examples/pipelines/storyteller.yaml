@@ -1,1 +1,387 @@
-# Pipeline opowiadacza historii
+# examples/pipelines/storyteller.yaml
+name: "movatalk - Opowiadacz historii"
+description: "Pipeline implementujący interaktywnego opowiadacza historii dla dzieci"
+version: "1.0.0"
+
+variables:
+  welcome_message: "Cześć! Jestem opowiadaczem historii. Mogę opowiedzieć Ci ciekawą historię na dowolny temat."
+  goodbye_message: "Do widzenia! Mam nadzieję, że spodobały Ci się moje historie."
+  story_template: |
+    Stwórz krótką historię dla dzieci (maksymalnie 4-5 zdań) na następujący temat:
+    {topic}
+    
+    Historia powinna być:
+    1. Pozytywna i pouczająca
+    2. Odpowiednia dla dzieci w wieku 5-8 lat
+    3. Prosta w zrozumieniu
+    4. Z jasnym początkiem i zakończeniem
+    5. Zawierać elementy z podanego tematu
+    
+    Zacznij historię od zwrotu "Dawno, dawno temu..." lub podobnego.
+  questions:
+    - "O czym chcesz usłyszeć dzisiaj historię?"
+    - "Jaki temat Cię interesuje? Opowiem Ci historię."
+    - "Podaj bohaterów lub miejsce, a opowiem Ci ciekawą historię."
+    - "O kim chciałbyś posłuchać dzisiaj?"
+
+steps:
+  - name: "initialize_storyteller"
+    type: "component"
+    component: "logger"
+    params:
+      level: "info"
+      message: "Inicjalizacja opowiadacza historii"
+
+  - name: "create_stories_dir"
+    type: "shell"
+    command: "mkdir -p ~/.movatalk/stories"
+    ignore_errors: true
+
+  - name: "welcome"
+    type: "component"
+    component: "text_to_speech"
+    params:
+      text: "${variables.welcome_message}"
+
+  - name: "storytelling_loop"
+    type: "component"
+    component: "loop"
+    params:
+      type: "while"
+      condition: "True"  # Nieskończona pętla, zakończona przez warunek wewnątrz
+      max_iterations: 10  # Zabezpieczenie przed nieskończoną pętlą
+      steps:
+        - name: "check_parental_time"
+          type: "component"
+          component: "parental_control"
+          params:
+            action: "check_time"
+
+        - name: "handle_time_restriction"
+          type: "component"
+          component: "condition"
+          params:
+            condition: "not context['results']['check_parental_time']['allowed']"
+            true_pipeline:
+              - name: "notify_time_restriction"
+                type: "component"
+                component: "text_to_speech"
+                params:
+                  text: "Przepraszam, ale teraz jest czas odpoczynku. Porozmawiajmy później."
+              - name: "pause_before_retry"
+                type: "component"
+                component: "timer"
+                params:
+                  action: "sleep"
+                  duration: 60
+              - name: "continue_loop"
+                type: "component"
+                component: "variable_set"
+                params:
+                  name: "continue"
+                  value: true
+                  scope: "state"
+
+        - name: "check_usage_limit"
+          type: "component"
+          component: "parental_control"
+          params:
+            action: "check_usage"
+
+        - name: "handle_usage_restriction"
+          type: "component"
+          component: "condition"
+          params:
+            condition: "not context['results']['check_usage_limit']['allowed']"
+            true_pipeline:
+              - name: "notify_usage_restriction"
+                type: "component"
+                component: "text_to_speech"
+                params:
+                  text: "Osiągnąłeś dzienny limit korzystania z urządzenia. Do zobaczenia jutro!"
+              - name: "pause_before_retry"
+                type: "component"
+                component: "timer"
+                params:
+                  action: "sleep"
+                  duration: 60
+              - name: "continue_loop"
+                type: "component"
+                component: "variable_set"
+                params:
+                  name: "continue"
+                  value: true
+                  scope: "state"
+
+        - name: "check_continue"
+          type: "component"
+          component: "condition"
+          params:
+            condition: "context['state'].get('continue', False)"
+            true_pipeline:
+              - name: "reset_continue"
+                type: "component"
+                component: "variable_set"
+                params:
+                  name: "continue"
+                  value: false
+                  scope: "state"
+            false_pipeline:
+              - name: "select_question"
+                type: "python"
+                code: |
+                  import random
+                  questions = context['variables']['questions']
+                  selected_question = random.choice(questions)
+                  context['state']['current_question'] = selected_question
+                  result = selected_question
+
+              - name: "ask_for_topic"
+                type: "component"
+                component: "text_to_speech"
+                params:
+                  text: "${state.current_question}"
+
+              - name: "record_topic"
+                type: "component"
+                component: "audio_record"
+                params:
+                  duration: 7
+                  output_var: "topic_audio"
+
+              - name: "transcribe_topic"
+                type: "component"
+                component: "speech_to_text"
+                params:
+                  audio_path: "${results.topic_audio}"
+                  output_var: "topic_text"
+
+              - name: "log_topic"
+                type: "component"
+                component: "logger"
+                params:
+                  level: "info"
+                  message: "Temat od użytkownika: '${results.topic_text}'"
+
+              - name: "filter_topic"
+                type: "component"
+                component: "parental_control"
+                params:
+                  action: "filter_input"
+                  input_text: "${results.topic_text}"
+                  output_var: "filtered_topic"
+
+              - name: "check_exit"
+                type: "component"
+                component: "condition"
+                params:
+                  condition: "any(word in context['results']['topic_text'].lower() for word in ['koniec', 'zakończ', 'wyjdź', 'pa', 'do widzenia'])"
+                  true_pipeline:
+                    - name: "say_goodbye"
+                      type: "component"
+                      component: "text_to_speech"
+                      params:
+                        text: "${variables.goodbye_message}"
+                    - name: "exit_loop"
+                      type: "component"
+                      component: "variable_set"
+                      params:
+                        name: "exit_storyteller"
+                        value: true
+                        scope: "state"
+                  false_pipeline:
+                    - name: "update_usage"
+                      type: "component"
+                      component: "parental_control"
+                      params:
+                        action: "check_usage"
+                        update_usage: true
+                        usage_minutes: 2
+
+                    - name: "generating_message"
+                      type: "component"
+                      component: "text_to_speech"
+                      params:
+                        text: "Dobrze, wymyślam historię. Daj mi chwilkę."
+
+                    - name: "check_cache"
+                      type: "component"
+                      component: "cache"
+                      params:
+                        action: "get"
+                        key: "story_${results.filtered_topic}"
+                        output_var: "cached_story"
+
+                    - name: "generate_or_use_cached"
+                      type: "component"
+                      component: "condition"
+                      params:
+                        condition: "context['results']['cached_story']['found']"
+                        true_pipeline:
+                          - name: "use_cached_story"
+                            type: "component"
+                            component: "variable_set"
+                            params:
+                              name: "story"
+                              value: "${results.cached_story.value}"
+                              scope: "results"
+                        false_pipeline:
+                          - name: "prepare_prompt"
+                            type: "component"
+                            component: "variable_set"
+                            params:
+                              name: "story_prompt"
+                              value: "${variables.story_template.replace('{topic}', results.filtered_topic)}"
+                              scope: "state"
+
+                          - name: "generate_story"
+                            type: "component"
+                            component: "local_llm"
+                            params:
+                              text: "${state.story_prompt}"
+                              output_var: "raw_story"
+                              fallback_to_api: true
+
+                          - name: "filter_story"
+                            type: "component"
+                            component: "content_filter"
+                            params:
+                              text: "${results.raw_story}"
+                              output_var: "story"
+                              age_group: "5-8"
+
+                          - name: "cache_story"
+                            type: "component"
+                            component: "cache"
+                            params:
+                              action: "set"
+                              key: "story_${results.filtered_topic}"
+                              value: "${results.story}"
+
+                    - name: "log_story"
+                      type: "component"
+                      component: "logger"
+                      params:
+                        level: "info"
+                        message: "Historia: '${results.story}'"
+
+                    - name: "save_story"
+                      type: "python"
+                      code: |
+                        import os
+                        import time
+                        
+                        # Przygotuj ścieżkę pliku
+                        timestamp = time.strftime("%Y%m%d_%H%M%S")
+                        story_dir = os.path.expanduser("~/.movatalk/stories")
+                        filename = os.path.join(story_dir, f"story_{timestamp}.txt")
+                        
+                        # Zapisz historię do pliku
+                        with open(filename, 'w') as f:
+                            f.write(f"Temat: {context['results']['filtered_topic']}\n\n")
+                            f.write(context['results']['story'])
+                            
+                        result = filename
+
+                    - name: "tell_story"
+                      type: "component"
+                      component: "text_to_speech"
+                      params:
+                        text: "${results.story}"
+
+                    - name: "ask_feedback"
+                      type: "component"
+                      component: "text_to_speech"
+                      params:
+                        text: "Czy podobała Ci się ta historia?"
+
+                    - name: "record_feedback"
+                      type: "component"
+                      component: "audio_record"
+                      params:
+                        duration: 3
+                        output_var: "feedback_audio"
+
+                    - name: "process_feedback"
+                      type: "component"
+                      component: "speech_to_text"
+                      params:
+                        audio_path: "${results.feedback_audio}"
+                        output_var: "feedback_text"
+
+                    - name: "handle_feedback"
+                      type: "component"
+                      component: "condition"
+                      params:
+                        condition: "'tak' in context['results']['feedback_text'].lower() or 'podoba' in context['results']['feedback_text'].lower()"
+                        true_pipeline:
+                          - name: "positive_response"
+                            type: "component"
+                            component: "text_to_speech"
+                            params:
+                              text: "Cieszę się! Chcesz usłyszeć kolejną historię?"
+                        false_pipeline:
+                          - name: "negative_response"
+                            type: "component"
+                            component: "text_to_speech"
+                            params:
+                              text: "Następnym razem postaram się lepiej. Chcesz usłyszeć inną historię?"
+
+                    - name: "record_continue"
+                      type: "component"
+                      component: "audio_record"
+                      params:
+                        duration: 3
+                        output_var: "continue_audio"
+
+                    - name: "process_continue"
+                      type: "component"
+                      component: "speech_to_text"
+                      params:
+                        audio_path: "${results.continue_audio}"
+                        output_var: "continue_text"
+
+                    - name: "check_continue_response"
+                      type: "component"
+                      component: "condition"
+                      params:
+                        condition: "'nie' in context['results']['continue_text'].lower() or 'koniec' in context['results']['continue_text'].lower()"
+                        true_pipeline:
+                          - name: "end_session"
+                            type: "component"
+                            component: "text_to_speech"
+                            params:
+                              text: "Dobrze, dziękuję za wspólny czas. Do widzenia!"
+                          - name: "exit_loop"
+                            type: "component"
+                            component: "variable_set"
+                            params:
+                              name: "exit_storyteller"
+                              value: true
+                              scope: "state"
+
+        - name: "check_exit_condition"
+          type: "component"
+          component: "condition"
+          params:
+            condition: "context['state'].get('exit_storyteller', False)"
+            true_pipeline:
+              - name: "break_loop"
+                type: "python"
+                code: |
+                  # Ten kod wymusza wyjście z pętli
+                  raise StopIteration("Zakończenie opowiadacza historii")
+
+        - name: "pause_between_stories"
+          type: "component"
+          component: "timer"
+          params:
+            action: "sleep"
+            duration: 2
+
+  - name: "cleanup"
+    type: "component"
+    component: "logger"
+    params:
+      level: "info"
+      message: "Zakończenie opowiadacza historii"

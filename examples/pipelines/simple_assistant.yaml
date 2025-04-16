@@ -1,1 +1,305 @@
-# Pipeline prostego asystenta
+# examples/pipelines/simple_assistant.yaml
+name: "movatalk - Prosty asystent"
+description: "Pipeline implementujący prosty asystent głosowy z kontrolą rodzicielską"
+version: "1.0.0"
+
+variables:
+  max_interactions: 10
+  greeting: "Witaj! Jestem twoim asystentem. Jak mogę Ci dzisiaj pomóc?"
+  goodbye: "Do widzenia! Miło było z Tobą rozmawiać."
+  error_message: "Przepraszam, wystąpił błąd. Spróbujmy jeszcze raz."
+  not_understand: "Przepraszam, nie zrozumiałem. Czy możesz powtórzyć?"
+
+steps:
+  - name: "initialize_logger"
+    type: "component"
+    component: "logger"
+    params:
+      level: "info"
+      message: "Inicjalizacja asystenta głosowego"
+      log_to_console: true
+
+  - name: "speak_greeting"
+    type: "component"
+    component: "text_to_speech"
+    params:
+      text: "${variables.greeting}"
+
+  - name: "init_conversation_loop"
+    type: "component"
+    component: "variable_set"
+    params:
+      name: "interaction_count"
+      value: 0
+      scope: "state"
+
+  - name: "conversation_loop"
+    type: "component"
+    component: "loop"
+    params:
+      type: "while"
+      condition: "context['state']['interaction_count'] < context['variables']['max_interactions']"
+      max_iterations: 20
+      steps:
+        - name: "check_parental_time"
+          type: "component"
+          component: "parental_control"
+          params:
+            action: "check_time"
+
+        - name: "handle_time_restriction"
+          type: "component"
+          component: "condition"
+          params:
+            condition: "not context['results']['check_parental_time']['allowed']"
+            true_pipeline:
+              - name: "notify_time_restriction"
+                type: "component"
+                component: "text_to_speech"
+                params:
+                  text: "Przepraszam, ale teraz jest czas odpoczynku. Porozmawiajmy później."
+
+              - name: "pause_before_retry"
+                type: "component"
+                component: "timer"
+                params:
+                  action: "sleep"
+                  duration: 60
+
+              - name: "skip_iteration"
+                type: "component"
+                component: "variable_set"
+                params:
+                  name: "skip_interaction"
+                  value: true
+                  scope: "state"
+
+        - name: "check_usage_limit"
+          type: "component"
+          component: "parental_control"
+          params:
+            action: "check_usage"
+
+        - name: "handle_usage_restriction"
+          type: "component"
+          component: "condition"
+          params:
+            condition: "not context['results']['check_usage_limit']['allowed']"
+            true_pipeline:
+              - name: "notify_usage_restriction"
+                type: "component"
+                component: "text_to_speech"
+                params:
+                  text: "Osiągnąłeś dzienny limit korzystania z urządzenia. Do zobaczenia jutro!"
+
+              - name: "pause_before_retry"
+                type: "component"
+                component: "timer"
+                params:
+                  action: "sleep"
+                  duration: 60
+
+              - name: "skip_iteration"
+                type: "component"
+                component: "variable_set"
+                params:
+                  name: "skip_interaction"
+                  value: true
+                  scope: "state"
+
+        - name: "check_skip"
+          type: "component"
+          component: "condition"
+          params:
+            condition: "context['state'].get('skip_interaction', False)"
+            true_pipeline:
+              - name: "reset_skip_flag"
+                type: "component"
+                component: "variable_set"
+                params:
+                  name: "skip_interaction"
+                  value: false
+                  scope: "state"
+
+            false_pipeline:
+              - name: "listen"
+                type: "component"
+                component: "logger"
+                params:
+                  level: "info"
+                  message: "Słucham..."
+
+              - name: "record_audio"
+                type: "component"
+                component: "audio_record"
+                params:
+                  duration: 5
+                  output_var: "audio_file"
+                  announce: true
+                  announce_message: "Słucham Cię."
+
+              - name: "transcribe_audio"
+                type: "component"
+                component: "speech_to_text"
+                params:
+                  audio_path: "${results.audio_file}"
+                  output_var: "transcript"
+
+              - name: "log_transcript"
+                type: "component"
+                component: "logger"
+                params:
+                  level: "info"
+                  message: "Rozpoznano: ${results.transcript}"
+
+              - name: "check_transcript"
+                type: "component"
+                component: "condition"
+                params:
+                  condition: "'Błąd' in context['results']['transcript']"
+                  true_pipeline:
+                    - name: "handle_transcript_error"
+                      type: "component"
+                      component: "text_to_speech"
+                      params:
+                        text: "${variables.not_understand}"
+
+                    - name: "continue_after_error"
+                      type: "component"
+                      component: "variable_set"
+                      params:
+                        name: "continue_conversation"
+                        value: true
+                        scope: "state"
+
+                  false_pipeline:
+                    - name: "filter_input"
+                      type: "component"
+                      component: "parental_control"
+                      params:
+                        action: "filter_input"
+                        input_text: "${results.transcript}"
+                        output_var: "filtered_input"
+
+                    - name: "check_filtered_input"
+                      type: "component"
+                      component: "condition"
+                      params:
+                        condition: "not context['results']['filter_input']['passed']"
+                        true_pipeline:
+                          - name: "speak_filter_message"
+                            type: "component"
+                            component: "text_to_speech"
+                            params:
+                              text: "${results.filter_input.filter_message}"
+
+                          - name: "continue_after_filter"
+                            type: "component"
+                            component: "variable_set"
+                            params:
+                              name: "continue_conversation"
+                              value: true
+                              scope: "state"
+
+                        false_pipeline:
+                          - name: "check_exit_command"
+                            type: "component"
+                            component: "condition"
+                            params:
+                              condition: "any(word in context['results']['transcript'].lower() for word in ['koniec', 'zakończ', 'wyjdź', 'pa', 'do widzenia'])"
+                              true_pipeline:
+                                - name: "speak_goodbye"
+                                  type: "component"
+                                  component: "text_to_speech"
+                                  params:
+                                    text: "${variables.goodbye}"
+
+                                - name: "exit_conversation"
+                                  type: "component"
+                                  component: "variable_set"
+                                  params:
+                                    name: "interaction_count"
+                                    value: 999  # Wartość większa niż max_interactions
+                                    scope: "state"
+
+                                - name: "set_continue_false"
+                                  type: "component"
+                                  component: "variable_set"
+                                  params:
+                                    name: "continue_conversation"
+                                    value: false
+                                    scope: "state"
+
+                              false_pipeline:
+                                - name: "update_usage"
+                                  type: "component"
+                                  component: "parental_control"
+                                  params:
+                                    action: "check_usage"
+                                    update_usage: true
+                                    usage_minutes: 1
+
+                                - name: "query_api"
+                                  type: "component"
+                                  component: "local_llm"
+                                  params:
+                                    text: "${results.filtered_input}"
+                                    output_var: "llm_response"
+                                    fallback_to_api: true
+
+                                - name: "filter_response"
+                                  type: "component"
+                                  component: "content_filter"
+                                  params:
+                                    text: "${results.llm_response}"
+                                    output_var: "filtered_response"
+                                    age_group: "5-8"
+
+                                - name: "log_response"
+                                  type: "component"
+                                  component: "logger"
+                                  params:
+                                    level: "info"
+                                    message: "Odpowiedź: ${results.filtered_response}"
+
+                                - name: "speak_response"
+                                  type: "component"
+                                  component: "text_to_speech"
+                                  params:
+                                    text: "${results.filtered_response}"
+
+                                - name: "increment_counter"
+                                  type: "component"
+                                  component: "variable_set"
+                                  params:
+                                    name: "interaction_count"
+                                    value: "${state.interaction_count + 1}"
+                                    scope: "state"
+
+                                - name: "continue_conversation"
+                                  type: "component"
+                                  component: "variable_set"
+                                  params:
+                                    name: "continue_conversation"
+                                    value: true
+                                    scope: "state"
+
+              - name: "check_continue"
+                type: "component"
+                component: "condition"
+                params:
+                  condition: "context['state'].get('continue_conversation', True)"
+                  true_pipeline:
+                    - name: "pause_between_interactions"
+                      type: "component"
+                      component: "timer"
+                      params:
+                        action: "sleep"
+                        duration: 1
+
+  - name: "cleanup"
+    type: "component"
+    component: "logger"
+    params:
+      level: "info"
+      message: "Zakończenie asystenta głosowego"
