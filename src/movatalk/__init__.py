@@ -7,7 +7,7 @@ aplikacji głosowych AI dla dzieci, z kontrolą rodzicielską
 i przetwarzaniem lokalnym.
 """
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 from movatalk.audio import AudioProcessor, WhisperSTT, PiperTTS
 from movatalk.api import SafeAPIConnector, CacheManager

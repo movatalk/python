@@ -64,7 +64,7 @@ mkdir -p "$PROJECT_DIR"
 
 # Clone project (replace with actual repository URL)
 echo "Cloning desktop automation bot repository..."
-git clone https://github.com/yourusername/desktop-bot.git "$PROJECT_DIR"
+git clone https://github.com/movatalk/desktop-bot.git "$PROJECT_DIR"
 
 # Setup Python virtual environment
 echo "Setting up Python virtual environment..."
@@ -151,7 +151,7 @@ dnf install -y \
 
 # Clone project (replace with actual repository URL)
 #echo "Cloning desktop automation bot repository..."
-#git clone https://github.com/yourusername/desktop-bot.git "$PROJECT_DIR"
+#git clone https://github.com/movatalk/desktop-bot.git "$PROJECT_DIR"
 
 # Setup Python virtual environment
 echo "Setting up Python virtual environment..."

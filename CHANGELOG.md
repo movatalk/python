@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.7] - 2025-04-16
+
+### Added
+- Changes in CONTRIBUTING.md
+
 ## [0.1.6] - 2025-04-16
 
 ### Added
@@ -37,7 +42,7 @@ All notable changes to this project will be documented in this file.
 - Changes in src/movatalk/__init__.py
 
 ### Removed
-- Changes in src/kidsvoiceai/__init__.py
+- Changes in src/movatalk/__init__.py
 
 ## [0.1.5] - 2025-04-16
 

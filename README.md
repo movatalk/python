@@ -7,7 +7,7 @@
 Biblioteka Python do tworzenia bezpiecznych interfejsów głosowych AI dla dzieci, z przetwarzaniem na urządzeniu i kontrolą rodzicielską.
 
 [![PyPI version](https://badge.fury.io/py/movatalk.svg)](https://badge.fury.io/py/movatalk)
-[![GitLab Pipeline Status](https://gitlab.com/yourusername/movatalk/badges/main/pipeline.svg)](https://gitlab.com/yourusername/movatalk/-/commits/main)
+[![GitLab Pipeline Status](https://gitlab.com/movatalk/movatalk/badges/main/pipeline.svg)](https://gitlab.com/movatalk/movatalk/-/commits/main)
 
 ## O projekcie
 
@@ -33,13 +33,13 @@ pip install movatalk
 ### Z GitLab
 
 ```bash
-pip install git+https://gitlab.com/yourusername/movatalk.git
+pip install git+https://gitlab.com/movatalk/movatalk.git
 ```
 
 ### Klonowanie repozytorium
 
 ```bash
-git clone https://gitlab.com/yourusername/movatalk.git
+git clone https://gitlab.com/movatalk/movatalk.git
 cd movatalk
 pip install -e .
 ```
@@ -49,7 +49,7 @@ pip install -e .
 Dla pełnej instalacji na Raspberry Pi Zero 2 W, zalecamy użycie naszych skryptów instalacyjnych:
 
 ```bash
-git clone https://gitlab.com/yourusername/movatalk.git
+git clone https://gitlab.com/movatalk/movatalk.git
 cd movatalk
 sudo bash scripts/install_dependencies.sh
 bash scripts/install_models.sh
@@ -122,7 +122,7 @@ movatalk jest rozwijany przez społeczność Open Source, zainspirowany koncepcj
 
 ## Kontakt
 
-- GitLab: https://gitlab.com/yourusername/movatalk
+- GitLab: https://gitlab.com/movatalk/movatalk
 - Email: contact@example.com
 
 # System pipelinów movatalk
