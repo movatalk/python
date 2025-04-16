@@ -1,0 +1,1 @@
+# Eksportuje AudioProcessor, WhisperSTT, PiperTTS

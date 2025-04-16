@@ -1,0 +1,1 @@
+# Dokumentacja systemu pipelinów

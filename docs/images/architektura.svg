@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tło -->
+  <rect x="0" y="0" width="800" height="500" fill="#f5f5f7" rx="10" ry="10"/>
+  
+  <!-- Tytuł -->
+  <text x="400" y="30" font-family="Arial" font-size="22" text-anchor="middle" font-weight="bold" fill="#333">Architektura systemu audio AI dla dzieci</text>
+  
+  <!-- Główne warstwy systemu -->
+  <g id="hardware-layer">
+    <rect x="50" y="70" width="700" height="80" fill="#d1e7dd" stroke="#198754" stroke-width="2" rx="5" ry="5"/>
+    <text x="400" y="105" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold" fill="#333">Warstwa sprzętowa (Raspberry Pi Zero 2 W)</text>
+    
+    <!-- Ikony komponentów -->
+    <g id="hardware-components">
+      <circle cx="120" cy="130" r="15" fill="#198754"/>
+      <text x="120" y="135" font-family="Arial" font-size="16" text-anchor="middle" fill="white">M</text>
+      <text x="120" y="155" font-family="Arial" font-size="12" text-anchor="middle">Mikrofony</text>
+      
+      <circle cx="220" cy="130" r="15" fill="#198754"/>
+      <text x="220" y="135" font-family="Arial" font-size="16" text-anchor="middle" fill="white">G</text>
+      <text x="220" y="155" font-family="Arial" font-size="12" text-anchor="middle">Głośnik</text>
+      
+      <circle cx="320" cy="130" r="15" fill="#198754"/>
+      <text x="320" y="135" font-family="Arial" font-size="16" text-anchor="middle" fill="white">B</text>
+      <text x="320" y="155" font-family="Arial" font-size="12" text-anchor="middle">Bateria</text>
+      
+      <circle cx="420" cy="130" r="15" fill="#198754"/>
+      <text x="420" y="135" font-family="Arial" font-size="16" text-anchor="middle" fill="white">P</text>
+      <text x="420" y="155" font-family="Arial" font-size="12" text-anchor="middle">Przyciski</text>
+      
+      <circle cx="520" cy="130" r="15" fill="#198754"/>
+      <text x="520" y="135" font-family="Arial" font-size="16" text-anchor="middle" fill="white">W</text>
+      <text x="520" y="155" font-family="Arial" font-size="12" text-anchor="middle">WiFi</text>
+      
+      <circle cx="620" cy="130" r="15" fill="#198754"/>
+      <text x="620" y="135" font-family="Arial" font-size="16" text-anchor="middle" fill="white">L</text>
+      <text x="620" y="155" font-family="Arial" font-size="12" text-anchor="middle">LoRa</text>
+    </g>
+  </g>
+  
+  <g id="os-layer">
+    <rect x="50" y="170" width="700" height="60" fill="#cfe2ff" stroke="#0d6efd" stroke-width="2" rx="5" ry="5"/>
+    <text x="400" y="205" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold" fill="#333">System operacyjny (Raspberry Pi OS Lite)</text>
+  </g>
+  
+  <g id="middleware-layer">
+    <rect x="50" y="250" width="700" height="100" fill="#fff3cd" stroke="#ffc107" stroke-width="2" rx="5" ry="5"/>
+    <text x="400" y="275" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold" fill="#333">Warstwa middleware</text>
+    
+    <rect x="80" y="295" width="150" height="40" fill="#fff8e6" stroke="#ffc107" stroke-width="1" rx="3" ry="3"/>
+    <text x="155" y="320" font-family="Arial" font-size="14" text-anchor="middle">Audio Processing</text>
+    
+    <rect x="250" y="295" width="150" height="40" fill="#fff8e6" stroke="#ffc107" stroke-width="1" rx="3" ry="3"/>
+    <text x="325" y="320" font-family="Arial" font-size="14" text-anchor="middle">Local STT (Whisper)</text>
+    
+    <rect x="420" y="295" width="150" height="40" fill="#fff8e6" stroke="#ffc107" stroke-width="1" rx="3" ry="3"/>
+    <text x="495" y="320" font-family="Arial" font-size="14" text-anchor="middle">Local TTS (Piper)</text>
+    
+    <rect x="590" y="295" width="140" height="40" fill="#fff8e6" stroke="#ffc107" stroke-width="1" rx="3" ry="3"/>
+    <text x="660" y="320" font-family="Arial" font-size="14" text-anchor="middle">API Connector</text>
+  </g>
+  
+  <g id="application-layer">
+    <rect x="50" y="370" width="700" height="100" fill="#f8d7da" stroke="#dc3545" stroke-width="2" rx="5" ry="5"/>
+    <text x="400" y="395" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold" fill="#333">Warstwa aplikacji</text>
+    
+    <rect x="80" y="415" width="200" height="40" fill="#fce3e5" stroke="#dc3545" stroke-width="1" rx="3" ry="3"/>
+    <text x="180" y="440" font-family="Arial" font-size="14" text-anchor="middle">Kontrola Rodzicielska</text>
+    
+    <rect x="300" y="415" width="200" height="40" fill="#fce3e5" stroke="#dc3545" stroke-width="1" rx="3" ry="3"/>
+    <text x="400" y="440" font-family="Arial" font-size="14" text-anchor="middle">Edukacyjny AI Assistant</text>
+    
+    <rect x="520" y="415" width="210" height="40" fill="#fce3e5" stroke="#dc3545" stroke-width="1" rx="3" ry="3"/>
+    <text x="625" y="440" font-family="Arial" font-size="14" text-anchor="middle">Interfejs użytkownika</text>
+  </g>
+  
+  <!-- Strzałki pokazujące przepływ danych -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+    </marker>
+  </defs>
+  
+  <line x1="155" y1="335" x2="240" y2="335" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="325" y1="335" x2="410" y2="335" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="495" y1="335" x2="580" y2="335" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <line x1="180" y1="370" x2="180" y2="415" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="400" y1="370" x2="400" y2="415" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="625" y1="370" x2="625" y2="415" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+</svg>

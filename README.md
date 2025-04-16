@@ -1,6 +1,50 @@
-# [movatalk](http://lib.pyfunc.com)
+# [movatalk](http://lib.movatalk.com)
 
-libs for cameramonit, ocr, fin-officer, cfo, and other projects
+# System pipelinów KidsVoiceAI
+
+System pipelinów KidsVoiceAI umożliwia tworzenie złożonych aplikacji głosowych za pomocą prostych plików konfiguracyjnych YAML, bez konieczności pisania kodu w Pythonie. Pipelines łączą gotowe komponenty i operacje w jeden spójny przepływ pracy.
+
+## Spis treści
+
+1. [Wprowadzenie do pipelinów](#wprowadzenie-do-pipelinów)
+2. [Struktura pliku YAML](#struktura-pliku-yaml)
+3. [Komponenty pipelinów](#komponenty-pipelinów)
+4. [Zmienne i kontekst](#zmienne-i-kontekst)
+5. [Kroki warunkowe i pętle](#kroki-warunkowe-i-pętle)
+6. [Programistyczne użycie pipelinów](#programistyczne-użycie-pipelinów)
+7. [Tworzenie własnych komponentów](#tworzenie-własnych-komponentów)
+8. [Kreator pipelinów](#kreator-pipelinów)
+9. [Wizualizacja pipelinów](#wizualizacja-pipelinów)
+10. [Przykłady](#przykłady)
+
+## Wprowadzenie do pipelinów
+
+Pipeline to sekwencja kroków, które są wykonywane kolejno, aby osiągnąć określony cel. W kontekście KidsVoiceAI, pipeline może reprezentować na przykład asystenta głosowego, który:
+
+1. Słucha pytania użytkownika
+2. Przetwarza mowę na tekst
+3. Wysyła zapytanie do modelu językowego
+4. Filtruje odpowiedź pod kątem bezpieczeństwa
+5. Zamienia tekst na mowę i odtwarza odpowiedź
+
+Zamiast pisać kod w Pythonie, możesz zdefiniować taki przepływ pracy w pliku YAML, który jest łatwy do czytania i modyfikacji.
+
+## Struktura pliku YAML
+
+Plik pipeline'u YAML składa się z następujących elementów:
+
+```yaml
+name: "Nazwa pipeline'u"
+description: "Opis działania pipeline'u"
+version: "1.0.0"
+
+variables:
+  zmienna1: "wartość1"
+  zmienna2: "wartość2"
+
+steps:
+  - name: "k
+```
 
 
 ## Install
@@ -11,7 +55,7 @@ pip install movatalk
 ```
 
 ```bash
-git clone https://github.com/pyfunc/lib.git pyfunc
+git clone https://github.com/movatalk/python.git movatalk
 ```
 
 
@@ -109,9 +153,9 @@ example
 # check
 git remote -v
 PAT=...
-git remote add origin https://$PAT@github.com/pyfunc/lib.git
+git remote add origin https://$PAT@github.com/movatalk/python.git
 # OR update:
-git remote set-url origin https://$PAT@github.com/pyfunc/lib.git
+git remote set-url origin https://$PAT@github.com/movatalk/python.git
 # check
 git remote -v
 git push
@@ -170,116 +214,6 @@ py -m build
 
 
 
-
-## init
-
-The `__init__.py` file is used to mark a directory as a Python package and can also be used to initialize code, define the package's public API, and handle package-level variables or imports.
-
-Here’s a basic guide on preparing the `__init__.py` file for your project located in the `src/movatalk/` directory.
-
-### Basic `__init__.py`
-
-1. **Creating the `__init__.py` File**:
-   - Navigate to `src/movatalk/` directory.
-   - Create an `__init__.py` file in this directory.
-
-Here is a basic example of what this file might contain:
-
-
-
-### Ensuring Proper Package Structure
-
-Here's what your final project structure might look like:
-
-```
-my_project/
-├── src/
-│   └── movatalk/
-│       ├── __init__.py
-│       ├── module1.py
-│       └── module2.py
-├── pyproject.toml
-├── README.md
-└── requirements.txt
-```
-
-
-
-
-
-
-
-Hoe generate an `__init__.py` file automatically based on information in `pyproject.toml` typically
-
-Let's break down how you can achieve this:
-
-1. **Understand the data to be included in `__init__.py`**: Essentially, you might want to include metadata (like version), and possibly auto-imports of modules/classes/functions.
-
-2. **Create a script to generate `__init__.py`**: This script would read `pyproject.toml`, extract the relevant information, and generate the `__init__.py` file.
-
-### Step-by-Step Guide
-
-#### Step 1: Install Required Libraries
-
-You will need `toml` for parsing `pyproject.toml`. Install it using `pip`.
-
-```bash
-pip install toml
-```
-
-#### Step 2: generate_init.py
-
-Create a Python script, e.g., `generate_init.py`, at the root of your project:
-
-Ensure that your `generate_init.py` script runs as part of your build process in your GitHub Actions workflow.
-
-Here's an updated GitHub Actions workflow to include the script execution:
-
-```bash
-py generate_init.py -p src/movatalk
-py generate_init.py -p src/movatalk/config
-py generate_init.py -p src/movatalk/csv
-py generate_init.py -p src/movatalk/email
-py generate_init.py -p src/movatalk/file
-py generate_init.py -p src/movatalk/function
-py generate_init.py -p src/movatalk/github
-py generate_init.py -p src/movatalk/local
-py generate_init.py -p src/movatalk/markdown
-py generate_init.py -p src/movatalk/ml
-py generate_init.py -p src/movatalk/ocr
-py generate_init.py -p src/movatalk/report
-py generate_init.py -p src/movatalk/serialization
-py generate_init.py -p src/movatalk/text
-
-```
-
-```bash
-py -m build
-```
-```bash
-py -m incremental.update movatalk --newversion=0.1.18
-py -m incremental.update movatalk --create
-py -m incremental.update movatalk --patch
-
-py -m incremental.update movatalk --rc
-py -m incremental.update movatalk
-```
-
-```bash
-pip install dist/movatalk-0.1.15-py3-none-any.whl
-```
-
-
-## validate pyproject.toml
-
-```bash
-pip install 'validate-pyproject[all]'
-```
-
-
-```bash
-validate-pyproject pyproject.toml
-```
 
 
 

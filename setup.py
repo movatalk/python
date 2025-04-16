@@ -18,27 +18,27 @@ except FileNotFoundError:
 # Configuration setup
 setup(
     name="movatalk",
-    version="0.1.40",
+    version="0.1.41",
     description="libs for cameramonit, ocr, fin-officer, cfo, and other projects",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     author="Tom Sapletta",
     author_email="tom@sapletta.com",
-    maintainer="pyfunc developers",
+    maintainer="movatalk developers",
     maintainer_email="info@softreck.dev",
     python_requires=">=3.7",
-    url="https://www.pyfunc.com",
+    url="https://www.movatalk.com",
     project_urls={
-        "Repository": "https://github.com/pyfunc/lib",
-        "Changelog": "https://github.com/pyfunc/lib/releases",
-        "Wiki": "https://github.com/pyfunc/lib/wiki",
-        "Issue Tracker": "https://github.com/pyfunc/lib/issues/new",
+        "Repository": "https://github.com/movatalk/python",
+        "Changelog": "https://github.com/movatalk/python/releases",
+        "Wiki": "https://github.com/movatalk/python/wiki",
+        "Issue Tracker": "https://github.com/movatalk/python/issues/new",
     },
     packages=["movatalk", "movatalk.config"],
     package_dir={"": "src"},
     license="Apache-2.0",  # Use simple string format
     license_files=("LICENSE"),  # Empty tuple to explicitly prevent license files
-    keywords=["python", "pyfunc", "movatalk", "pyfunc3", "pyfunc"],
+    keywords=["python", "movatalk", "movatalk", "movatalk3", "movatalk"],
     classifiers=[
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',

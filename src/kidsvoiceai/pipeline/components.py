@@ -1,0 +1,5 @@
+# Komponenty pipelinów
+"""
+components.py
+"""
+

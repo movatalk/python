@@ -2,6 +2,69 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.5] - 2025-04-16
+
+### Added
+- Changes in .gitlab-ci.yml
+- Changes in config/default_api_config.json
+- Changes in config/default_parental_control.json
+- Changes in config/default_system_config.json
+- Changes in deployment/ansible/inventory.ini
+- Changes in deployment/ansible/kidsvoiceai-deploy.yml
+- Changes in docs/api_reference.md
+- Changes in docs/examples.md
+- Changes in docs/hardware_setup.md
+- Changes in docs/images/architektura.svg
+- Changes in docs/images/hardware_diagram.png
+- Changes in docs/images/pipeline_schema.svg
+- Changes in docs/installation.md
+- Changes in docs/pipelines.md
+- Changes in examples/educational_quiz.py
+- Changes in examples/pipelines/educational_quiz.yaml
+- Changes in examples/pipelines/simple_assistant.yaml
+- Changes in examples/pipelines/storyteller.yaml
+- Changes in examples/simple_assistant.py
+- Changes in examples/storyteller.py
+- Changes in scripts/configure_hardware.sh
+- Changes in scripts/install_dependencies.sh
+- Changes in scripts/install_models.sh
+- Changes in scripts/optimize_rpi.sh
+- Changes in scripts/setup_service.sh
+- Changes in src.md
+- Changes in src/kidsvoiceai/__init__.py
+- Changes in src/kidsvoiceai/__main__.py
+- Changes in src/kidsvoiceai/api/__init__.py
+- Changes in src/kidsvoiceai/api/cache.py
+- Changes in src/kidsvoiceai/api/connector.py
+- Changes in src/kidsvoiceai/api/local_llm.py
+- Changes in src/kidsvoiceai/audio/__init__.py
+- Changes in src/kidsvoiceai/audio/processor.py
+- Changes in src/kidsvoiceai/audio/stt.py
+- Changes in src/kidsvoiceai/audio/tts.py
+- Changes in src/kidsvoiceai/cli/__init__.py
+- Changes in src/kidsvoiceai/cli/commands.py
+- Changes in src/kidsvoiceai/hardware/__init__.py
+- Changes in src/kidsvoiceai/hardware/interface.py
+- Changes in src/kidsvoiceai/hardware/lora.py
+- Changes in src/kidsvoiceai/hardware/power.py
+- Changes in src/kidsvoiceai/pipeline/__init__.py
+- Changes in src/kidsvoiceai/pipeline/components.py
+- Changes in src/kidsvoiceai/pipeline/designer.py
+- Changes in src/kidsvoiceai/pipeline/engine.py
+- Changes in src/kidsvoiceai/pipeline/parser.py
+- Changes in src/kidsvoiceai/safety/__init__.py
+- Changes in src/kidsvoiceai/safety/content_filter.py
+- Changes in src/kidsvoiceai/safety/parental_control.py
+- Changes in src/kidsvoiceai/utils/__init__.py
+- Changes in src/kidsvoiceai/utils/config.py
+- Changes in src/kidsvoiceai/utils/logging.py
+- Changes in tests/__init__.py
+- Changes in tests/test_api.py
+- Changes in tests/test_audio.py
+- Changes in tests/test_hardware.py
+- Changes in tests/test_pipeline.py
+- Changes in tests/test_safety.py
+
 ## [0.1.4] - 2025-04-16
 
 ### Removed
