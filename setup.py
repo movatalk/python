@@ -18,7 +18,7 @@ except FileNotFoundError:
 # Configuration setup
 setup(
     name="movatalk",
-    version="0.1.39",
+    version="0.1.40",
     description="libs for cameramonit, ocr, fin-officer, cfo, and other projects",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
@@ -34,7 +34,7 @@ setup(
         "Wiki": "https://github.com/pyfunc/lib/wiki",
         "Issue Tracker": "https://github.com/pyfunc/lib/issues/new",
     },
-    packages=["movatalk", "movatalk.config", "movatalk.email", "movatalk.file"],
+    packages=["movatalk", "movatalk.config"],
     package_dir={"": "src"},
     license="Apache-2.0",  # Use simple string format
     license_files=("LICENSE"),  # Empty tuple to explicitly prevent license files

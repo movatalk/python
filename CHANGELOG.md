@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.4] - 2025-04-16
+
+### Removed
+- Changes in version.py
+
 ## [0.1.3] - 2025-04-16
 
 ## [0.1.2] - 2025-04-16
