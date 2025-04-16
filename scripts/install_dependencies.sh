@@ -1,9 +1,9 @@
 #!/bin/bash
-# Instalacja zależności systemowych dla KidsVoiceAI
+# Instalacja zależności systemowych dla movatalk
 
 set -e  # Zatrzymanie przy błędzie
 
-echo "===== Instalacja zależności systemowych dla KidsVoiceAI ====="
+echo "===== Instalacja zależności systemowych dla movatalk ====="
 
 # Sprawdzenie uprawnień
 if [ "$EUID" -ne 0 ]; then

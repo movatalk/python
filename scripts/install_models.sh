@@ -1,12 +1,12 @@
 #!/bin/bash
-# Instalacja modeli STT i TTS dla KidsVoiceAI
+# Instalacja modeli STT i TTS dla movatalk
 
 set -e  # Zatrzymanie przy błędzie
 
-echo "===== Instalacja modeli STT i TTS dla KidsVoiceAI ====="
+echo "===== Instalacja modeli STT i TTS dla movatalk ====="
 
 # Katalog modeli
-MODELS_DIR="$HOME/.kidsvoiceai/models"
+MODELS_DIR="$HOME/.movatalk/models"
 mkdir -p $MODELS_DIR/{stt,tts}
 
 # Pobieranie i kompilacja Whisper.cpp

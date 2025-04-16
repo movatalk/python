@@ -1,6 +1,6 @@
-# kidsvoiceai/api/cache.py
+# movatalk/api/cache.py
 """
-Moduł do zarządzania pamięcią podręczną API w KidsVoiceAI.
+Moduł do zarządzania pamięcią podręczną API w movatalk.
 """
 
 import os
@@ -24,7 +24,7 @@ class CacheManager:
         """
         # Domyślna ścieżka pliku cache
         if cache_file is None:
-            self.cache_file = os.path.expanduser("~/.kidsvoiceai/api_cache.json")
+            self.cache_file = os.path.expanduser("~/.movatalk/api_cache.json")
         else:
             self.cache_file = os.path.expanduser(cache_file)
 

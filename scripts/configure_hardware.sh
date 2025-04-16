@@ -1,9 +1,9 @@
 #!/bin/bash
-# Konfiguracja sprzętu dla KidsVoiceAI
+# Konfiguracja sprzętu dla movatalk
 
 set -e  # Zatrzymanie przy błędzie
 
-echo "===== Konfiguracja sprzętu dla KidsVoiceAI ====="
+echo "===== Konfiguracja sprzętu dla movatalk ====="
 
 # Sprawdzenie uprawnień
 if [ "$EUID" -ne 0 ]; then

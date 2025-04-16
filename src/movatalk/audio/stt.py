@@ -1,6 +1,6 @@
-# kidsvoiceai/audio/stt.py
+# movatalk/audio/stt.py
 """
-Moduł do rozpoznawania mowy (Speech-to-Text) w KidsVoiceAI.
+Moduł do rozpoznawania mowy (Speech-to-Text) w movatalk.
 """
 
 import os
@@ -25,7 +25,7 @@ class WhisperSTT:
         """
         # Ustalenie ścieżek
         self.home_dir = os.path.expanduser("~")
-        self.default_model_dir = os.path.join(self.home_dir, ".kidsvoiceai", "models", "stt")
+        self.default_model_dir = os.path.join(self.home_dir, ".movatalk", "models", "stt")
 
         # Jeśli nie podano ścieżki, użyj domyślnej
         if model_path is None:

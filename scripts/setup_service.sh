@@ -1,9 +1,9 @@
 #!/bin/bash
-# Konfiguracja usługi systemd dla KidsVoiceAI
+# Konfiguracja usługi systemd dla movatalk
 
 set -e  # Zatrzymanie przy błędzie
 
-echo "===== Konfiguracja usługi systemd dla KidsVoiceAI ====="
+echo "===== Konfiguracja usługi systemd dla movatalk ====="
 
 # Sprawdzenie uprawnień
 if [ "$EUID" -ne 0 ]; then
@@ -12,21 +12,21 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Ścieżka do zainstalowanego pakietu
-KIDSVOICEAI_PATH=$(pip3 show kidsvoiceai | grep "Location" | awk '{print $2}')
-if [ -z "$KIDSVOICEAI_PATH" ]; then
-  echo "Błąd: Nie znaleziono pakietu kidsvoiceai. Czy został zainstalowany?"
+movatalk_PATH=$(pip3 show movatalk | grep "Location" | awk '{print $2}')
+if [ -z "$movatalk_PATH" ]; then
+  echo "Błąd: Nie znaleziono pakietu movatalk. Czy został zainstalowany?"
   exit 1
 fi
 
 # Utworzenie usługi systemd
 echo "Tworzenie usługi systemd..."
-cat > /etc/systemd/system/kidsvoiceai.service << EOF
+cat > /etc/systemd/system/movatalk.service << EOF
 [Unit]
-Description=KidsVoiceAI - Bezpieczny interfejs głosowy AI dla dzieci
+Description=movatalk - Bezpieczny interfejs głosowy AI dla dzieci
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 -m kidsvoiceai
+ExecStart=/usr/bin/python3 -m movatalk
 WorkingDirectory=/home/$SUDO_USER
 StandardOutput=journal
 StandardError=journal
@@ -41,9 +41,9 @@ EOF
 # Aktywacja usługi
 echo "Aktywacja usługi..."
 systemctl daemon-reload
-systemctl enable kidsvoiceai.service
+systemctl enable movatalk.service
 
 echo "===== Konfiguracja usługi zakończona! ====="
-echo "Aby uruchomić usługę: sudo systemctl start kidsvoiceai"
-echo "Aby sprawdzić status: sudo systemctl status kidsvoiceai"
-echo "Aby zatrzymać usługę: sudo systemctl stop kidsvoiceai"
+echo "Aby uruchomić usługę: sudo systemctl start movatalk"
+echo "Aby sprawdzić status: sudo systemctl status movatalk"
+echo "Aby zatrzymać usługę: sudo systemctl stop movatalk"

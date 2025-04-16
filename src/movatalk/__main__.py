@@ -4,8 +4,8 @@ __main__.py
 """
 
 """
-Moduł uruchamiający dla KidsVoiceAI.
-Pozwala na uruchomienie KidsVoiceAI jako aplikacji z linii poleceń.
+Moduł uruchamiający dla movatalk.
+Pozwala na uruchomienie movatalk jako aplikacji z linii poleceń.
 """
 
 import argparse
@@ -15,19 +15,19 @@ import time
 import json
 import signal
 
-from kidsvoiceai.audio import AudioProcessor, WhisperSTT, PiperTTS
-from kidsvoiceai.api import SafeAPIConnector
-from kidsvoiceai.hardware import HardwareInterface, PowerManager
-from kidsvoiceai.safety import ParentalControl
-from kidsvoiceai.utils import ConfigManager
+from movatalk.audio import AudioProcessor, WhisperSTT, PiperTTS
+from movatalk.api import SafeAPIConnector
+from movatalk.hardware import HardwareInterface, PowerManager
+from movatalk.safety import ParentalControl
+from movatalk.utils import ConfigManager
 
 
 class VoiceAIAssistant:
-    """Główna klasa asystenta głosowego dla KidsVoiceAI."""
+    """Główna klasa asystenta głosowego dla movatalk."""
 
     def __init__(self, config_path=None):
         """Inicjalizacja asystenta głosowego."""
-        print("Inicjalizacja KidsVoiceAI...")
+        print("Inicjalizacja movatalk...")
 
         # Wczytanie konfiguracji
         self.config_manager = ConfigManager(config_path)
@@ -165,7 +165,7 @@ class VoiceAIAssistant:
 
     def run(self):
         """Uruchom główną pętlę asystenta."""
-        print("Uruchomienie KidsVoiceAI")
+        print("Uruchomienie movatalk")
 
         if not self.hardware:
             print("Tryb konsolowy: Naciśnij Enter, aby rozpocząć interakcję lub 'q', aby wyjść.")
@@ -191,12 +191,12 @@ class VoiceAIAssistant:
                     if power_status['battery_level'] < 15 and not power_status['is_charging']:
                         self.hardware.blink_led(self.hardware.LED_POWER, duration=3, interval=0.1)
 
-        print("KidsVoiceAI zakończył pracę.")
+        print("movatalk zakończył pracę.")
 
 
 def main():
     """Funkcja główna uruchamiana z linii poleceń."""
-    parser = argparse.ArgumentParser(description="KidsVoiceAI - Bezpieczny interfejs głosowy AI dla dzieci")
+    parser = argparse.ArgumentParser(description="movatalk - Bezpieczny interfejs głosowy AI dla dzieci")
     parser.add_argument("--config", help="Ścieżka do pliku konfiguracyjnego")
     parser.add_argument("--console", action="store_true",
                         help="Uruchom w trybie konsolowym (bez interfejsu sprzętowego)")

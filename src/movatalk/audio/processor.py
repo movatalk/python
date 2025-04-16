@@ -1,6 +1,6 @@
-# kidsvoiceai/audio/processor.py
+# movatalk/audio/processor.py
 """
-Moduł do przetwarzania audio w KidsVoiceAI.
+Moduł do przetwarzania audio w movatalk.
 """
 
 import numpy as np
@@ -33,7 +33,7 @@ class AudioProcessor:
         self.audio_data = []
 
         # Utworzenie katalogu tymczasowego
-        self.temp_dir = os.path.join(tempfile.gettempdir(), "kidsvoiceai")
+        self.temp_dir = os.path.join(tempfile.gettempdir(), "movatalk")
         os.makedirs(self.temp_dir, exist_ok=True)
 
     def start_recording(self, duration=None):

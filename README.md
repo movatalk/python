@@ -1,8 +1,133 @@
 # [movatalk](http://lib.movatalk.com)
 
-# System pipelinów KidsVoiceAI
+# movatalk
 
-System pipelinów KidsVoiceAI umożliwia tworzenie złożonych aplikacji głosowych za pomocą prostych plików konfiguracyjnych YAML, bez konieczności pisania kodu w Pythonie. Pipelines łączą gotowe komponenty i operacje w jeden spójny przepływ pracy.
+![movatalk Logo](docs/images/logo.png)
+
+Biblioteka Python do tworzenia bezpiecznych interfejsów głosowych AI dla dzieci, z przetwarzaniem na urządzeniu i kontrolą rodzicielską.
+
+[![PyPI version](https://badge.fury.io/py/movatalk.svg)](https://badge.fury.io/py/movatalk)
+[![GitLab Pipeline Status](https://gitlab.com/yourusername/movatalk/badges/main/pipeline.svg)](https://gitlab.com/yourusername/movatalk/-/commits/main)
+
+## O projekcie
+
+movatalk to biblioteka open source zaprojektowana do tworzenia bezpiecznych urządzeń głosowych dla dzieci, które wykorzystują technologie sztucznej inteligencji przy zachowaniu prywatności i kontroli rodzicielskiej. Inspirowana koncepcją urządzenia MovaPad, biblioteka umożliwia przetwarzanie mowy na tekst (STT) i tekstu na mowę (TTS) bezpośrednio na urządzeniu, zapewniając ochronę wrażliwych danych.
+
+### Kluczowe funkcje
+
+- 🎤 **Przetwarzanie audio** - Nagrywanie, filtrowanie i przetwarzanie dźwięku
+- 🗣️ **Lokalne STT i TTS** - Konwersja mowy na tekst i tekstu na mowę na urządzeniu
+- 🔒 **Kontrola rodzicielska** - Filtrowanie treści, limity czasowe, bezpieczne połączenia
+- 🔋 **Zarządzanie energią** - Optymalizacja zużycia baterii
+- 🌐 **Opcjonalne integracje z AI** - Bezpieczne połączenia z API AI
+- 📱 **Interfejs sprzętowy** - Wsparcie dla przycisków, diod LED i innych komponentów
+
+## Instalacja
+
+### Z PyPI
+
+```bash
+pip install movatalk
+```
+
+### Z GitLab
+
+```bash
+pip install git+https://gitlab.com/yourusername/movatalk.git
+```
+
+### Klonowanie repozytorium
+
+```bash
+git clone https://gitlab.com/yourusername/movatalk.git
+cd movatalk
+pip install -e .
+```
+
+### Instalacja na Raspberry Pi Zero 2 W
+
+Dla pełnej instalacji na Raspberry Pi Zero 2 W, zalecamy użycie naszych skryptów instalacyjnych:
+
+```bash
+git clone https://gitlab.com/yourusername/movatalk.git
+cd movatalk
+sudo bash scripts/install_dependencies.sh
+bash scripts/install_models.sh
+pip install -e .
+sudo bash scripts/setup_service.sh
+```
+
+## Szybki start
+
+```python
+from movatalk.audio import AudioProcessor, WhisperSTT, PiperTTS
+from movatalk.api import SafeAPIConnector
+from movatalk.safety import ParentalControl
+
+# Inicjalizacja komponentów
+audio = AudioProcessor()
+stt = WhisperSTT()
+tts = PiperTTS()
+api = SafeAPIConnector()
+parental = ParentalControl()
+
+# Nagrywanie i przetwarzanie
+audio_file = audio.start_recording(duration=5)
+transcript = stt.transcribe(audio_file)
+print(f"Rozpoznany tekst: {transcript}")
+
+# Filtrowanie i API
+filtered_input, filter_message = parental.filter_input(transcript)
+if filtered_input:
+    response = api.query_llm(filtered_input)
+    filtered_response = parental.filter_output(response)
+    tts.speak(filtered_response)
+else:
+    tts.speak(filter_message)
+```
+
+Więcej przykładów znajdziesz w katalogu [examples/](examples/).
+
+## Wymagania sprzętowe
+
+Minimalne wymagania:
+- Raspberry Pi Zero 2 W lub podobne urządzenie
+- Mikrofon (np. ReSpeaker 2-Mic Pi HAT)
+- Głośnik/wzmacniacz
+- Przyciski i diody LED (opcjonalnie)
+- Bateria (opcjonalnie)
+
+Pełną listę wspieranych platform znajdziesz w [docs/hardware_setup.md](docs/hardware_setup.md).
+
+## Dokumentacja
+
+Pełna dokumentacja dostępna jest w katalogu [docs/](docs/):
+
+- [Instalacja](docs/installation.md)
+- [Konfiguracja sprzętowa](docs/hardware_setup.md)
+- [Referencja API](docs/api_reference.md)
+- [Przykłady użycia](docs/examples.md)
+
+## Współpraca nad projektem
+
+Zachęcamy do współpracy nad rozwojem projektu movatalk! Aby dowiedzieć się więcej, przeczytaj [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Licencja
+
+Ten projekt jest dostępny na licencji MIT. Zobacz plik [LICENSE](LICENSE) dla szczegółów.
+
+## Autorzy
+
+movatalk jest rozwijany przez społeczność Open Source, zainspirowany koncepcją urządzenia MovaPad.
+
+## Kontakt
+
+- GitLab: https://gitlab.com/yourusername/movatalk
+- Email: contact@example.com
+
+# System pipelinów movatalk
+
+System pipelinów movatalk umożliwia tworzenie złożonych aplikacji głosowych za pomocą prostych plików konfiguracyjnych YAML, bez konieczności pisania kodu w Pythonie. Pipelines łączą gotowe komponenty i operacje w jeden spójny przepływ pracy.
 
 ## Spis treści
 
@@ -19,7 +144,7 @@ System pipelinów KidsVoiceAI umożliwia tworzenie złożonych aplikacji głosow
 
 ## Wprowadzenie do pipelinów
 
-Pipeline to sekwencja kroków, które są wykonywane kolejno, aby osiągnąć określony cel. W kontekście KidsVoiceAI, pipeline może reprezentować na przykład asystenta głosowego, który:
+Pipeline to sekwencja kroków, które są wykonywane kolejno, aby osiągnąć określony cel. W kontekście movatalk, pipeline może reprezentować na przykład asystenta głosowego, który:
 
 1. Słucha pytania użytkownika
 2. Przetwarza mowę na tekst

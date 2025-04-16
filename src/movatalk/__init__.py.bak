@@ -1,25 +1,25 @@
 # Inicjalizacja pakietu
 """
-KidsVoiceAI - Bezpieczny interfejs głosowy AI dla dzieci.
+movatalk - Bezpieczny interfejs głosowy AI dla dzieci.
 
-Biblioteka KidsVoiceAI zapewnia narzędzia do tworzenia bezpiecznych
+Biblioteka movatalk zapewnia narzędzia do tworzenia bezpiecznych
 aplikacji głosowych AI dla dzieci, z kontrolą rodzicielską
 i przetwarzaniem lokalnym.
 """
 
 __version__ = "0.1.0"
 
-from kidsvoiceai.audio import AudioProcessor, WhisperSTT, PiperTTS
-from kidsvoiceai.api import SafeAPIConnector, CacheManager
-from kidsvoiceai.hardware import HardwareInterface, PowerManager
-from kidsvoiceai.safety import ParentalControl, ContentFilter
-from kidsvoiceai.utils import ConfigManager
+from movatalk.audio import AudioProcessor, WhisperSTT, PiperTTS
+from movatalk.api import SafeAPIConnector, CacheManager
+from movatalk.hardware import HardwareInterface, PowerManager
+from movatalk.safety import ParentalControl, ContentFilter
+from movatalk.utils import ConfigManager
 
 # Domyślna konfiguracja całej biblioteki
 import os
 import json
 
-CONFIG_DIR = os.path.expanduser("~/.kidsvoiceai")
+CONFIG_DIR = os.path.expanduser("~/.movatalk")
 os.makedirs(CONFIG_DIR, exist_ok=True)
 
 
@@ -65,7 +65,7 @@ def initialize_default_configs():
             "record_seconds": 5
         },
         "stt": {
-            "model_path": os.path.expanduser("~/.kidsvoiceai/models/stt/models/ggml-tiny.bin"),
+            "model_path": os.path.expanduser("~/.movatalk/models/stt/models/ggml-tiny.bin"),
             "language": "pl"
         },
         "tts": {

@@ -1,6 +1,6 @@
-# kidsvoiceai/hardware/interface.py
+# movatalk/hardware/interface.py
 """
-Moduł do interfejsu sprzętowego w KidsVoiceAI.
+Moduł do interfejsu sprzętowego w movatalk.
 """
 
 import os

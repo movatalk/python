@@ -1,6 +1,6 @@
-# kidsvoiceai/safety/parental_control.py
+# movatalk/safety/parental_control.py
 """
-Moduł kontroli rodzicielskiej w KidsVoiceAI.
+Moduł kontroli rodzicielskiej w movatalk.
 """
 
 import os
@@ -23,7 +23,7 @@ class ParentalControl:
         """
         # Domyślna ścieżka konfiguracji
         if config_file is None:
-            self.config_path = os.path.expanduser("~/.kidsvoiceai/parental_control.json")
+            self.config_path = os.path.expanduser("~/.movatalk/parental_control.json")
         else:
             self.config_path = os.path.expanduser(config_file)
 

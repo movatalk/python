@@ -1,6 +1,6 @@
-# kidsvoiceai/audio/tts.py
+# movatalk/audio/tts.py
 """
-Moduł do syntezy mowy (Text-to-Speech) w KidsVoiceAI.
+Moduł do syntezy mowy (Text-to-Speech) w movatalk.
 """
 
 import os
@@ -55,7 +55,7 @@ class PiperTTS:
         self.sample_rate = 22050  # Standardowa częstotliwość dla Piper
 
         # Katalog tymczasowy na pliki audio
-        self.temp_dir = os.path.join(tempfile.gettempdir(), "kidsvoiceai", "tts")
+        self.temp_dir = os.path.join(tempfile.gettempdir(), "movatalk", "tts")
         os.makedirs(self.temp_dir, exist_ok=True)
 
     def _load_voice(self):

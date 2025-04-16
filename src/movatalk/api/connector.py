@@ -1,6 +1,6 @@
-# kidsvoiceai/api/connector.py
+# movatalk/api/connector.py
 """
-Moduł do bezpiecznego łączenia z API LLM w KidsVoiceAI.
+Moduł do bezpiecznego łączenia z API LLM w movatalk.
 """
 
 import os
@@ -23,7 +23,7 @@ class SafeAPIConnector:
         """
         # Domyślna ścieżka konfiguracji
         if config_file is None:
-            self.config_path = os.path.expanduser("~/.kidsvoiceai/api_config.json")
+            self.config_path = os.path.expanduser("~/.movatalk/api_config.json")
         else:
             self.config_path = os.path.expanduser(config_file)
 
@@ -31,7 +31,7 @@ class SafeAPIConnector:
 
         # Inicjalizacja pamięci podręcznej
         self.cache = {}
-        self.cache_file = os.path.expanduser("~/.kidsvoiceai/api_cache.json")
+        self.cache_file = os.path.expanduser("~/.movatalk/api_cache.json")
         self.load_cache()
 
     def load_config(self):
@@ -105,7 +105,7 @@ class SafeAPIConnector:
             str: Odpowiedź modelu lub komunikat błędu.
         """
         if not self.config["api_key"]:
-            return "Brak skonfigurowanego klucza API. Proszę skonfigurować klucz API w pliku ~/.kidsvoiceai/api_config.json"
+            return "Brak skonfigurowanego klucza API. Proszę skonfigurować klucz API w pliku ~/.movatalk/api_config.json"
 
         # Sprawdzenie w pamięci podręcznej
         if use_cache:

@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.6] - 2025-04-16
+
+### Added
+- Changes in docs/hardware/README.md
+- Changes in src/movatalk/__main__.py
+- Changes in src/movatalk/api/__init__.py
+- Changes in src/movatalk/api/cache.py
+- Changes in src/movatalk/api/connector.py
+- Changes in src/movatalk/api/local_llm.py
+- Changes in src/movatalk/audio/__init__.py
+- Changes in src/movatalk/audio/processor.py
+- Changes in src/movatalk/audio/stt.py
+- Changes in src/movatalk/audio/tts.py
+- Changes in src/movatalk/cli/__init__.py
+- Changes in src/movatalk/cli/commands.py
+- Changes in src/movatalk/hardware/__init__.py
+- Changes in src/movatalk/hardware/interface.py
+- Changes in src/movatalk/hardware/lora.py
+- Changes in src/movatalk/hardware/power.py
+- Changes in src/movatalk/pipeline/__init__.py
+- Changes in src/movatalk/pipeline/components.py
+- Changes in src/movatalk/pipeline/designer.py
+- Changes in src/movatalk/pipeline/engine.py
+- Changes in src/movatalk/pipeline/parser.py
+- Changes in src/movatalk/safety/__init__.py
+- Changes in src/movatalk/safety/content_filter.py
+- Changes in src/movatalk/safety/parental_control.py
+- Changes in src/movatalk/utils/__init__.py
+- Changes in src/movatalk/utils/config.py
+- Changes in src/movatalk/utils/logging.py
+
+### Changed
+- Changes in src/movatalk/__init__.py
+
+### Removed
+- Changes in src/kidsvoiceai/__init__.py
+
 ## [0.1.5] - 2025-04-16
 
 ### Added
@@ -10,7 +47,7 @@ All notable changes to this project will be documented in this file.
 - Changes in config/default_parental_control.json
 - Changes in config/default_system_config.json
 - Changes in deployment/ansible/inventory.ini
-- Changes in deployment/ansible/kidsvoiceai-deploy.yml
+- Changes in deployment/ansible/movatalk-deploy.yml
 - Changes in docs/api_reference.md
 - Changes in docs/examples.md
 - Changes in docs/hardware_setup.md
@@ -31,33 +68,33 @@ All notable changes to this project will be documented in this file.
 - Changes in scripts/optimize_rpi.sh
 - Changes in scripts/setup_service.sh
 - Changes in src.md
-- Changes in src/kidsvoiceai/__init__.py
-- Changes in src/kidsvoiceai/__main__.py
-- Changes in src/kidsvoiceai/api/__init__.py
-- Changes in src/kidsvoiceai/api/cache.py
-- Changes in src/kidsvoiceai/api/connector.py
-- Changes in src/kidsvoiceai/api/local_llm.py
-- Changes in src/kidsvoiceai/audio/__init__.py
-- Changes in src/kidsvoiceai/audio/processor.py
-- Changes in src/kidsvoiceai/audio/stt.py
-- Changes in src/kidsvoiceai/audio/tts.py
-- Changes in src/kidsvoiceai/cli/__init__.py
-- Changes in src/kidsvoiceai/cli/commands.py
-- Changes in src/kidsvoiceai/hardware/__init__.py
-- Changes in src/kidsvoiceai/hardware/interface.py
-- Changes in src/kidsvoiceai/hardware/lora.py
-- Changes in src/kidsvoiceai/hardware/power.py
-- Changes in src/kidsvoiceai/pipeline/__init__.py
-- Changes in src/kidsvoiceai/pipeline/components.py
-- Changes in src/kidsvoiceai/pipeline/designer.py
-- Changes in src/kidsvoiceai/pipeline/engine.py
-- Changes in src/kidsvoiceai/pipeline/parser.py
-- Changes in src/kidsvoiceai/safety/__init__.py
-- Changes in src/kidsvoiceai/safety/content_filter.py
-- Changes in src/kidsvoiceai/safety/parental_control.py
-- Changes in src/kidsvoiceai/utils/__init__.py
-- Changes in src/kidsvoiceai/utils/config.py
-- Changes in src/kidsvoiceai/utils/logging.py
+- Changes in src/movatalk/__init__.py
+- Changes in src/movatalk/__main__.py
+- Changes in src/movatalk/api/__init__.py
+- Changes in src/movatalk/api/cache.py
+- Changes in src/movatalk/api/connector.py
+- Changes in src/movatalk/api/local_llm.py
+- Changes in src/movatalk/audio/__init__.py
+- Changes in src/movatalk/audio/processor.py
+- Changes in src/movatalk/audio/stt.py
+- Changes in src/movatalk/audio/tts.py
+- Changes in src/movatalk/cli/__init__.py
+- Changes in src/movatalk/cli/commands.py
+- Changes in src/movatalk/hardware/__init__.py
+- Changes in src/movatalk/hardware/interface.py
+- Changes in src/movatalk/hardware/lora.py
+- Changes in src/movatalk/hardware/power.py
+- Changes in src/movatalk/pipeline/__init__.py
+- Changes in src/movatalk/pipeline/components.py
+- Changes in src/movatalk/pipeline/designer.py
+- Changes in src/movatalk/pipeline/engine.py
+- Changes in src/movatalk/pipeline/parser.py
+- Changes in src/movatalk/safety/__init__.py
+- Changes in src/movatalk/safety/content_filter.py
+- Changes in src/movatalk/safety/parental_control.py
+- Changes in src/movatalk/utils/__init__.py
+- Changes in src/movatalk/utils/config.py
+- Changes in src/movatalk/utils/logging.py
 - Changes in tests/__init__.py
 - Changes in tests/test_api.py
 - Changes in tests/test_audio.py

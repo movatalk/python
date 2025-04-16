@@ -1,6 +1,6 @@
-# kidsvoiceai/hardware/lora.py
+# movatalk/hardware/lora.py
 """
-Moduł do obsługi komunikacji LoRaWAN w KidsVoiceAI.
+Moduł do obsługi komunikacji LoRaWAN w movatalk.
 """
 
 import os
@@ -27,7 +27,7 @@ class LoRaConnector:
 
         # Domyślna ścieżka konfiguracji
         if config_file is None:
-            self.config_path = os.path.expanduser("~/.kidsvoiceai/lora_config.json")
+            self.config_path = os.path.expanduser("~/.movatalk/lora_config.json")
         else:
             self.config_path = os.path.expanduser(config_file)
 
@@ -249,4 +249,3 @@ class LoRaConnector:
                 self.is_connected = False
             except Exception as e:
                 print(f"Błąd podczas czyszczenia LoRa: {str(e)}")
-

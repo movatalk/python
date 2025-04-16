@@ -1,6 +1,6 @@
-# kidsvoiceai/hardware/power.py
+# movatalk/hardware/power.py
 """
-Moduł do zarządzania energią w KidsVoiceAI.
+Moduł do zarządzania energią w movatalk.
 """
 
 import os
